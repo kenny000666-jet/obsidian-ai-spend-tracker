@@ -83,12 +83,50 @@ export default class AiSpendPlugin extends Plugin {
       env: { ...process.env, PATH: this.settings.binPath }, timeout: 20000 }).trim();
   }
 
+  getClaudeToken(): string | null {
+    const platform = process.platform;
+
+    // ── macOS: read from Keychain ────────────────────────────────────────
+    if (platform === "darwin") {
+      try {
+        const account = this.settings.keychainAccount || this.sh("id -un");
+        const raw = this.sh(
+          `security find-generic-password -s "Claude Code-credentials" -a "${account}" -w 2>/dev/null`
+        );
+        const token = JSON.parse(raw)?.claudeAiOauth?.accessToken;
+        if (token) return token;
+      } catch (e) {
+        console.warn("[AI Spend] macOS Keychain read failed:", e);
+      }
+    }
+
+    // ── Linux / Windows: read from ~/.claude/.credentials.json ──────────
+    const credPaths = [
+      path.join(process.env.CLAUDE_CONFIG_DIR || "", ".credentials.json"),
+      path.join(process.env.HOME || process.env.USERPROFILE || "", ".claude", ".credentials.json"),
+    ].filter(p => p.length > 20); // filter out empty-prefix paths
+
+    for (const credPath of credPaths) {
+      try {
+        if (!fs.existsSync(credPath)) continue;
+        const raw = fs.readFileSync(credPath, "utf8");
+        const token = JSON.parse(raw)?.claudeAiOauth?.accessToken;
+        if (token) {
+          console.log(`[AI Spend] read token from ${credPath}`);
+          return token;
+        }
+      } catch (e) {
+        console.warn(`[AI Spend] failed to read ${credPath}:`, e);
+      }
+    }
+
+    return null;
+  }
+
   fetchClaude(): SpendData | null {
     try {
-      const account = this.settings.keychainAccount || this.sh("id -un");
-      const raw = this.sh(`security find-generic-password -s "Claude Code-credentials" -a "${account}" -w 2>/dev/null`);
-      const token = JSON.parse(raw)?.claudeAiOauth?.accessToken;
-      if (!token) return null;
+      const token = this.getClaudeToken();
+      if (!token) { console.warn("[AI Spend] no Claude token found"); return null; }
       const resp = this.sh(`curl -sf -m 10 "https://api.anthropic.com/api/oauth/usage" -H "Authorization: Bearer ${token}" -H "anthropic-beta: oauth-2025-04-20"`);
       const eu = JSON.parse(resp)?.extra_usage;
       if (!eu) return null;
@@ -210,8 +248,8 @@ class AiSpendSettingTab extends PluginSettingTab {
     containerEl.empty();
     containerEl.createEl("h2", { text: "AI Spend Tracker" });
 
-    new Setting(containerEl).setName("macOS Keychain account")
-      .setDesc('Your macOS username (run "id -un" in Terminal). Leave blank to auto-detect.')
+    new Setting(containerEl).setName("macOS Keychain account (macOS only)")
+      .setDesc('Your macOS username (run "id -un" in Terminal). Only needed on macOS — Linux and Windows read credentials from ~/.claude/.credentials.json automatically. Leave blank to auto-detect.')
       .addText(t => t.setPlaceholder("e.g. ken.tse").setValue(this.plugin.settings.keychainAccount)
         .onChange(async v => { this.plugin.settings.keychainAccount = v; await this.plugin.saveSettings(); }));
     new Setting(containerEl).setName("Claude.ai monthly budget (USD)")

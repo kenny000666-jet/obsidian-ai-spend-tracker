@@ -22,10 +22,22 @@
 
 | Requirement | Notes |
 |---|---|
-| **macOS** | The plugin uses the macOS Keychain to read Claude Code credentials. Windows/Linux not supported. |
+| **Desktop only** | Mobile (iOS/Android) is not supported — Claude Code doesn't run on mobile |
 | **Obsidian 1.4.0+** | Tested on 1.12+ |
 | **Claude Code** | Must be installed and authenticated. Run `claude auth status` in Terminal to verify. |
-| **uv** | Required for Copilot spend. Install with `brew install uv`. |
+| **uv** | Required for Copilot spend. Install with `brew install uv` (macOS/Linux) or see [uv docs](https://docs.astral.sh/uv/getting-started/installation/). |
+
+### Credential storage by platform
+
+The plugin reads Claude Code's OAuth token from wherever Claude Code stores it on your OS — it doesn't store anything itself:
+
+| Platform | Where credentials live | Security |
+|---|---|---|
+| **macOS** | macOS Keychain (encrypted, hardware-backed) | Read via `security` CLI — macOS prompts for access on first use |
+| **Linux** | `~/.claude/.credentials.json` (mode 0600) | File-based, readable only by your user |
+| **Windows** | `%USERPROFILE%\.claude\.credentials.json` | File-based, restricted to your user profile |
+
+> **Note:** If you've set `CLAUDE_CONFIG_DIR`, the plugin checks that path first.
 
 ---
 
@@ -73,16 +85,18 @@ Then enable the plugin in **Settings → Community plugins**.
 
 After enabling the plugin, open **Settings → AI Spend Tracker** and configure:
 
-### 1. Set your macOS Keychain account
+### 1. Set your macOS Keychain account (macOS only)
 
-This is your macOS username — the same account that Claude Code uses to store credentials.
+**Skip this step on Linux and Windows** — the plugin reads `~/.claude/.credentials.json` automatically.
+
+On macOS, this is your system username — the account Claude Code used when it stored credentials in Keychain.
 
 To find it, open Terminal and run:
 ```bash
 id -un
 ```
 
-Paste the result (e.g. `ken.tse`) into the **macOS Keychain account** field. If you leave it blank the plugin will try to auto-detect it, but setting it explicitly is more reliable.
+Paste the result (e.g. `ken.tse`) into the **macOS Keychain account** field. Leave it blank to auto-detect.
 
 ### 2. Verify Claude Code is authenticated
 
@@ -163,7 +177,7 @@ If a service shows ⚠️ Unavailable, see the [Troubleshooting](#troubleshootin
 
 | Setting | Default | Description |
 |---|---|---|
-| **macOS Keychain account** | *(auto)* | Your macOS username (`id -un`). Used to read Claude Code credentials from Keychain. |
+| **macOS Keychain account** | *(auto)* | **macOS only.** Your macOS username (`id -un`). Skip on Linux/Windows. |
 | **Claude.ai monthly budget** | `$200` | Your programmatic credit pool limit from claude.ai → Settings → Usage limits. |
 | **GitHub Copilot budget** | `$200` | Fallback budget used if the Copilot API doesn't return an entitlement value. |
 | **Cache TTL (hours)** | `4` | How long to cache spend data before re-fetching. Minimum 1h recommended. |
