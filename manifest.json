@@ -1,0 +1,10 @@
+{
+  "id": "ai-spend-tracker",
+  "name": "AI Spend Tracker",
+  "version": "1.0.0",
+  "minAppVersion": "1.4.0",
+  "description": "Track your GitHub Copilot and Claude.ai programmatic credit spend directly in Obsidian. Live budget bars, 4-hour cache, and macOS Keychain integration.",
+  "author": "Ken Tse",
+  "authorUrl": "https://github.je-labs.com/ken-tse",
+  "isDesktopOnly": true
+}
