@@ -150,7 +150,7 @@ Total this month: $215.98
 ### Refreshing data
 
 - Data is cached for **4 hours** by default to avoid hitting API rate limits.
-- To force a fresh fetch, click the **↻ Refresh** button at the top of the panel.
+- To force a fresh fetch, click the small **↻** button in the top-right corner of the **💰 Spend & budgets** callout title bar.
 - You can also use the command palette: `AI Spend: Refresh spend data (force)`.
 
 ### When data shows "Unavailable"
