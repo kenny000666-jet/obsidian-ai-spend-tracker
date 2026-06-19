@@ -1,8 +1,10 @@
 # Obsidian AI Spend Tracker
 
-> Track your **GitHub Copilot** and **Claude.ai** programmatic credit spend directly in Obsidian — live budget bars in a sidebar panel, with smart caching to avoid API rate limits.
+> Track your **GitHub Copilot** and **Claude.ai** programmatic credit spend directly in Obsidian — live budget bars in the dashboard, with smart caching to avoid API rate limits.
 
-![Obsidian AI Spend Tracker sidebar showing GitHub Copilot and Claude.ai budget bars](.github/screenshot.png)
+![AI Spend Tracker showing Note metrics and Spend & budgets panels side by side in an Obsidian dashboard](.github/screenshot.png)
+
+*Note metrics (left) and Spend & budgets (right) — both collapsible, equal height, live data. The ↻ button in the Spend callout title bar forces an immediate refresh.*
 
 ---
 
