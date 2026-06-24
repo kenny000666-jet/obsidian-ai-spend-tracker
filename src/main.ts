@@ -140,6 +140,7 @@ export default class AiSpendPlugin extends Plugin {
 
   fetchCopilot(): CopilotData | null {
     try {
+      // Uses copilot-spend by @nkootstra — https://github.com/nkootstra/copilot-spend
       const d = JSON.parse(this.sh("uvx copilot-spend --json 2>/dev/null"));
       const limit = parseFloat(d.dollars_entitlement ?? this.settings.copilotBudget);
       const rem = parseFloat(d.dollars_free_remaining ?? 0);

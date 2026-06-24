@@ -229,6 +229,8 @@ uvx copilot-spend
 ```
 If it prompts for login: `uvx copilot-spend login`
 
+> **Note:** `copilot-spend` is maintained by [@nkootstra](https://github.com/nkootstra/copilot-spend). If you have authentication issues, check that repo for the latest login instructions.
+
 **Check 3 — PATH setting:**
 Make sure `/opt/homebrew/bin` is in the plugin's **Binary PATH** setting. On Intel Macs use `/usr/local/bin` instead.
 
@@ -269,7 +271,7 @@ npm run dev
 | Data source | Method |
 |---|---|
 | **Claude.ai spend** | Reads your OAuth token from macOS Keychain (written by Claude Code), then calls `https://api.anthropic.com/api/oauth/usage` — the same endpoint that powers the status bar in Claude Code and the Settings page at claude.ai |
-| **Copilot spend** | Shells out to `uvx copilot-spend --json` ([copilot-spend](https://pypi.org/project/copilot-spend/) by [@nicktindall](https://github.com/nicktindall)) |
+| **Copilot spend** | Shells out to `uvx copilot-spend --json` ([copilot-spend](https://github.com/nkootstra/copilot-spend) by [@nkootstra](https://github.com/nkootstra)) |
 | **Caching** | Results stored in `<plugin-dir>/spend-cache.json` for the configured TTL to avoid rate limits |
 
 ---
