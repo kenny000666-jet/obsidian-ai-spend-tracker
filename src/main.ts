@@ -250,7 +250,7 @@ class AiSpendSettingTab extends PluginSettingTab {
 
     new Setting(containerEl).setName("macOS Keychain account (macOS only)")
       .setDesc('Your macOS username (run "id -un" in Terminal). Only needed on macOS — Linux and Windows read credentials from ~/.claude/.credentials.json automatically. Leave blank to auto-detect.')
-      .addText(t => t.setPlaceholder("e.g. ken.tse").setValue(this.plugin.settings.keychainAccount)
+      .addText(t => t.setPlaceholder("e.g. jsmith").setValue(this.plugin.settings.keychainAccount)
         .onChange(async v => { this.plugin.settings.keychainAccount = v; await this.plugin.saveSettings(); }));
     new Setting(containerEl).setName("Claude.ai monthly budget (USD)")
       .setDesc("Your programmatic credit pool. Check claude.ai → Settings → Usage limits.")

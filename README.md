@@ -47,7 +47,7 @@ The plugin reads Claude Code's OAuth token from wherever Claude Code stores it o
 
 ### Option A — Manual install (recommended)
 
-1. Go to the [latest release](https://github.je-labs.com/ken-tse/obsidian-ai-spend-tracker/releases/latest)
+1. Go to the [latest release](https://github.com/ken-tse/obsidian-ai-spend-tracker/releases/latest)
 2. Download these three files:
    - `main.js`
    - `manifest.json`
@@ -65,7 +65,7 @@ The plugin reads Claude Code's OAuth token from wherever Claude Code stores it o
 
 ```bash
 # 1. Clone the repo
-git clone https://github.je-labs.com/ken-tse/obsidian-ai-spend-tracker
+git clone https://github.com/ken-tse/obsidian-ai-spend-tracker
 cd obsidian-ai-spend-tracker
 
 # 2. Install dependencies
@@ -251,7 +251,7 @@ Open Obsidian DevTools (`Cmd+Option+I`) and check the Console tab for `[AI Spend
 ## Building from source
 
 ```bash
-git clone https://github.je-labs.com/ken-tse/obsidian-ai-spend-tracker
+git clone https://github.com/ken-tse/obsidian-ai-spend-tracker
 cd obsidian-ai-spend-tracker
 npm install
 npm run build   # produces main.js
